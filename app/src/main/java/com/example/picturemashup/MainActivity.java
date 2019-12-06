@@ -75,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
             ImageView mainImageView = findViewById(R.id.currentImageView);
             mainImageView.setImageBitmap(squareBitmap);
             this.cameraBitmap = squareBitmap;
+            sendImageToEditor();
         }
     }
 
@@ -118,6 +119,15 @@ public class MainActivity extends AppCompatActivity {
                     outFile);
             sendScreenshot(uri.toString());
         }catch(IOException e){}
+    }
+
+    //launches the editing activity and passes the location of the camera image file
+    public void sendImageToEditor(){
+        Intent intent = new Intent(this, EditingActivity.class);
+        Bundle extras = new Bundle();
+        extras.putString("fileLocation", currentPhotoPath);
+        intent.putExtras(extras);
+        startActivity(intent);
     }
 
     //takes the uri string and launches a share intent with it

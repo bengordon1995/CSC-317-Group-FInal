@@ -1,37 +1,53 @@
-//package com.example.picturemashup;
-//
-//import android.app.Activity;
-//import android.content.Context;
-//import android.graphics.Bitmap;
-//import android.graphics.BitmapFactory;
-//import android.graphics.Canvas;
-//import android.graphics.Color;
-//import android.graphics.Paint;
-//import android.graphics.Path;
-//import android.graphics.PorterDuff;
-//import android.graphics.PorterDuffXfermode;
-//import android.os.Bundle;
-//import android.view.MotionEvent;
-//import android.view.View;
-//import android.widget.LinearLayout;
-//import android.widget.Toast;
-//
-//public class EditingActivity extends Activity {
-//
-//    Bitmap bp;
-//    Canvas bitmapCanvas;
-//    DrawView drawImg;
-//    LinearLayout ln1;
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        ln1 = (LinearLayout) findViewById(R.id.mainViewGroup);
-//        drawImg = new DrawView(this);
-//        ln1.addView(drawImg);
-//    }
-//
+package com.example.picturemashup;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.os.Bundle;
+import android.os.Environment;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import java.io.File;
+
+public class EditingActivity extends Activity {
+
+    Bitmap bp;
+    Canvas bitmapCanvas;
+    //DrawView drawImg;
+    LinearLayout ln1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        //get camera intent bitmap from extras
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        String fileLocation = extras.getString("fileLocation");
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = new File(storageDir + fileLocation);
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bp = BitmapFactory.decodeFile(image.getAbsolutePath(), bmOptions);
+
+        //
+        ImageView ln1 = (ImageView) findViewById(R.id.currentImageView);
+        ln1.setImageBitmap(bp);
+        //drawImg = new DrawView(this);
+        //ln1.addView(drawImg);
+    }
+
 //    public class DrawView extends View implements View.OnTouchListener {
 //
 //        private int x = 0;
@@ -52,7 +68,6 @@
 //
 //            // Set background
 //            this.setBackgroundColor(Color.CYAN);
-//            bp = BitmapFactory.decodeResource(getResources(), R.drawable.bg);
 //
 //            // Set bitmap
 //            bitmap = Bitmap.createBitmap(320, 480, Bitmap.Config.ARGB_8888);
@@ -106,4 +121,8 @@
 //            return true;
 //        }
 //    }
-//}
+//
+//    public void onCropSubmit(View view){
+//
+//    }
+}
