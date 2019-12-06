@@ -1,18 +1,16 @@
 package com.example.picturemashup;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.FileProvider;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.ImageView;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -20,16 +18,27 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
+
+    ImageView currentImage;
     static String currentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
-    static ImageView currentImageView;
 
-    @Override
+    //the users image bitmap taken from the camera intent
+    Bitmap cameraBitmap;
+
+
+    //-------------------------------------------------------------------------
+    //                      Camera Intent and Image Capture
+    //-------------------------------------------------------------------------
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
+    public void onTakePictureClick(View view){
+        dispatchTakePictureIntent();
+    }
 
     //sets up and dispatches the camera
     private void dispatchTakePictureIntent() {
@@ -63,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
             int size = Math.min(bitmap.getWidth(), bitmap.getHeight());
             //squaring up the image, sizing images handled by XML as long as image is square
             Bitmap squareBitmap = Bitmap.createBitmap(bitmap, 0, 0, size, size);
-            currentImageView.setImageBitmap(squareBitmap);
+            ImageView mainImageView = findViewById(R.id.currentImageView);
+            mainImageView.setImageBitmap(squareBitmap);
+            this.cameraBitmap = squareBitmap;
         }
     }
 
@@ -83,33 +94,31 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-//    public void captureCollage(View view){
-////        try {
-////            //try to make a new file to store the screenshot
-////            File collageFile = createImageFile();
-////            View collageView = findViewById(R.id.collage_view);
-////
-////            //draw the view to the bitmap
-////            collageView.setDrawingCacheEnabled(true);
-////            Bitmap bitmap = Bitmap.createBitmap(collageView.getDrawingCache());
-////            collageView.setDrawingCacheEnabled(false);
-////
-////            //square up the screenshot
-////            int size = Math.min(bitmap.getWidth(), bitmap.getHeight());
-////            Bitmap squareBitmap = Bitmap.createBitmap(bitmap, 0, 0, size, size);
-////
-////            //write the cropped bitmap to the file
-////            FileOutputStream outputStream = new FileOutputStream(collageFile);
-////            squareBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-////            outputStream.flush();
-////            outputStream.close();
-////            Uri uri = FileProvider.getUriForFile(
-////                    MainActivity.this,
-////                    "com.example.android.fileprovider", //(use your app signature + ".provider" )
-////                    collageFile);
-////            sendScreenshot(uri.toString());
-////        }catch(IOException e){}
-////    }
+    public void captureCollage(View view){
+        try {
+            //get the bitmap from the main image view
+            ImageView mainImageView = findViewById(R.id.currentImageView);
+            Bitmap bitmap = ((BitmapDrawable)mainImageView.getDrawable()).getBitmap();
+
+            //square up the bitmap
+            int size = Math.min(bitmap.getWidth(), bitmap.getHeight());
+            Bitmap squareBitmap = Bitmap.createBitmap(bitmap, 0, 0, size, size);
+
+            //make a new file to hold the image bitmap
+            File outFile = createImageFile();
+
+            //write the cropped bitmap to the file
+            FileOutputStream outputStream = new FileOutputStream(outFile);
+            squareBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+            Uri uri = FileProvider.getUriForFile(
+                    MainActivity.this,
+                    "com.example.android.fileprovider", //(use your app signature + ".provider" )
+                    outFile);
+            sendScreenshot(uri.toString());
+        }catch(IOException e){}
+    }
 
     //takes the uri string and launches a share intent with it
     private void sendScreenshot(String uriString) {
@@ -120,3 +129,5 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 }
+
+
