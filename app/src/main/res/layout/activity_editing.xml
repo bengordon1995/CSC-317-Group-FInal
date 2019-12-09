@@ -6,16 +6,38 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".EditingActivity"
-    android:id="@+id/mainViewGroup">
+    android:id="@+id/mainViewGroup"
+    android:orientation="vertical">
 
-    <ImageView
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/currentImageView"/>
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/currentImageView"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/foreground"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/background"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/composite"/>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="onCropSubmit"/>
-
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="onCropSubmit"
+                android:text="editing view submit"/>
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

@@ -2,6 +2,10 @@ package com.example.picturemashup;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,11 +21,16 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static android.graphics.PorterDuff.Mode.SRC_IN;
+
 public class MainActivity extends AppCompatActivity {
 
-    ImageView currentImage;
     static String currentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
+    static final int imageDim = 400;
+
+    //self reference
+    static MainActivity instance;
 
     //the users image bitmap taken from the camera intent
     Bitmap cameraBitmap;
@@ -34,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        this.instance = this;
     }
 
     public void onTakePictureClick(View view){
@@ -68,18 +78,19 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             //if the picture was successfully taken, we know its stored in the static variable directory
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            System.out.println("current photo path: " + (String) currentPhotoPath);
             Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
             int size = Math.min(bitmap.getWidth(), bitmap.getHeight());
             //squaring up the image, sizing images handled by XML as long as image is square
-            Bitmap squareBitmap = Bitmap.createBitmap(bitmap, 0, 0, size, size);
+            Bitmap squareBitmap = Bitmap.createBitmap(bitmap, 0, 0, imageDim, imageDim);
             ImageView mainImageView = findViewById(R.id.currentImageView);
             mainImageView.setImageBitmap(squareBitmap);
-            this.cameraBitmap = squareBitmap;
+
             sendImageToEditor();
         }
     }
 
-    private File createImageFile() throws IOException {
+    public File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
