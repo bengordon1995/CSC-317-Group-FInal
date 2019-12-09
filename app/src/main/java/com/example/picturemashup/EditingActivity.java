@@ -12,16 +12,12 @@ import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import androidx.core.content.FileProvider;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
