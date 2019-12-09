@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 
-xmlns:tools="http://schemas.android.com/tools"
-android:layout_width="300dp"
-android:layout_height="50dp"
-tools:context="com.example.picturemashup.eachRow"
-    android:id="@+id/each_image">
 
-</TextView>
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:id="@+id/each_row"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:id="@+id/each_image"
+        android:layout_marginLeft="100dp"
+        />
+
+</LinearLayout>
