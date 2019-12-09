@@ -30,8 +30,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static android.graphics.PorterDuff.Mode.DST_IN;
+import static android.graphics.PorterDuff.Mode.DST_OUT;
+import static android.graphics.PorterDuff.Mode.DST_OVER;
 import static android.graphics.PorterDuff.Mode.SRC_IN;
 import static android.graphics.PorterDuff.Mode.SRC_OUT;
+import static android.graphics.PorterDuff.Mode.SRC_OVER;
+import static com.example.picturemashup.MainActivity.rotateBitmap;
 
 public class EditingActivity extends Activity {
 
@@ -66,7 +70,7 @@ public class EditingActivity extends Activity {
         Path circlePath;
         Paint circlePaint;
 
-        private final Paint paint = new Paint();
+        private final Paint paint = new Paint(Paint.FILTER_BITMAP_FLAG);
         private final Paint eraserPaint = new Paint();
 
 
@@ -79,6 +83,11 @@ public class EditingActivity extends Activity {
             // Set background
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
             bp = BitmapFactory.decodeFile(bitmapAbsoluteLocation, bmOptions);
+
+            //squaring up the image
+            bp = bp.createBitmap(bp, 0, 0, MainActivity.imageDim, MainActivity.imageDim);
+            //rotating the image into correct alignment
+            bp = rotateBitmap(bp, 90);
 
 
             // Set bitmap
@@ -145,12 +154,21 @@ public class EditingActivity extends Activity {
             String editedBitmapFilePath = image.getAbsolutePath();
 
             FileOutputStream outputStream = new FileOutputStream(image);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
+            //draw edits to bitmap
+            Paint paint = new Paint();
+            Bitmap outBitmap = Bitmap.createBitmap(MainActivity.imageDim, MainActivity.imageDim, Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(outBitmap);
+            canvas.drawBitmap(bp, null, new Rect(0,0,MainActivity.imageDim, MainActivity.imageDim), paint);
+            paint.setXfermode(new PorterDuffXfermode(SRC_IN));
+            canvas.drawBitmap(bitmap, null, new Rect(0,0,MainActivity.imageDim, MainActivity.imageDim), paint);
+
+            outBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             outputStream.flush();
             outputStream.close();
 
             //call function to combine images
-            compositeImages(editedBitmapFilePath, bp);
+            compositeImages(editedBitmapFilePath, outBitmap);
         }
         catch (FileNotFoundException f){
             f.printStackTrace();
@@ -172,11 +190,12 @@ public class EditingActivity extends Activity {
         previousView.setImageBitmap(null);
 
         //dummy bitmap (THIS IS WHERE THE FLICKR BITMAP GOES)
-        Bitmap bmBackground = BitmapFactory.decodeResource(getResources(), R.drawable.doge);
+        Bitmap bmBackground = BitmapFactory.decodeResource(getResources(), R.drawable.beach);
 
         //create a new bitmap to hold the composited image
         Paint paint = new Paint();
         Bitmap outBitmap = Bitmap.createBitmap(MainActivity.imageDim, MainActivity.imageDim, Bitmap.Config.ARGB_8888);
+
 
         ImageView foregroundView = findViewById(R.id.foreground);
         foregroundView.setImageBitmap(editedBitmap);
@@ -188,15 +207,16 @@ public class EditingActivity extends Activity {
 
         //composite the two images by drawing to canvas (NOT CHECKED FOR PORTER-DUFF YET)
         Canvas canvas = new Canvas(outBitmap);
+        canvas.drawColor(Color.TRANSPARENT);
         canvas.drawBitmap(bmBackground, null, new Rect(0,0,MainActivity.imageDim, MainActivity.imageDim), paint);
-        paint.setXfermode(new PorterDuffXfermode(SRC_IN));
-        canvas.drawBitmap(bmForeground, null, new Rect(0,0,MainActivity.imageDim, MainActivity.imageDim), paint);
+        paint.setXfermode(new PorterDuffXfermode(SRC_OVER));
+        canvas.drawBitmap(editedBitmap, null, new Rect(0,0,MainActivity.imageDim, MainActivity.imageDim), paint);
 
         //ImageView mainImageView = findViewById(R.id.currentImageView);
        // mainImageView.setImageBitmap(null);
 
         ImageView compositedView = findViewById(R.id.composite);
-        compositedView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+        compositedView.setLayerType(View.LAYER_TYPE_SOFTWARE, paint);
         compositedView.setImageBitmap(outBitmap);
 
 

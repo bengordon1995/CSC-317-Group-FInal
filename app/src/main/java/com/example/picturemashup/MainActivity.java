@@ -3,6 +3,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     static String currentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
-    static final int imageDim = 400;
+    static final int imageDim = 900;
 
     //self reference
     static MainActivity instance;
@@ -78,14 +79,9 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == REQUEST_TAKE_PHOTO && resultCode == RESULT_OK) {
             //if the picture was successfully taken, we know its stored in the static variable directory
             BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            System.out.println("current photo path: " + (String) currentPhotoPath);
             Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
-            int size = Math.min(bitmap.getWidth(), bitmap.getHeight());
-            //squaring up the image, sizing images handled by XML as long as image is square
-            Bitmap squareBitmap = Bitmap.createBitmap(bitmap, 0, 0, imageDim, imageDim);
-            ImageView mainImageView = findViewById(R.id.currentImageView);
-            mainImageView.setImageBitmap(squareBitmap);
 
+            //start editing activity
             sendImageToEditor();
         }
     }
@@ -106,32 +102,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void captureCollage(View view){
-        try {
-            //get the bitmap from the main image view
-            ImageView mainImageView = findViewById(R.id.currentImageView);
-            Bitmap bitmap = ((BitmapDrawable)mainImageView.getDrawable()).getBitmap();
-
-            //square up the bitmap
-            int size = Math.min(bitmap.getWidth(), bitmap.getHeight());
-            Bitmap squareBitmap = Bitmap.createBitmap(bitmap, 0, 0, size, size);
-
-            //make a new file to hold the image bitmap
-            File outFile = createImageFile();
-
-            //write the cropped bitmap to the file
-            FileOutputStream outputStream = new FileOutputStream(outFile);
-            squareBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            outputStream.flush();
-            outputStream.close();
-            Uri uri = FileProvider.getUriForFile(
-                    MainActivity.this,
-                    "com.example.android.fileprovider", //(use your app signature + ".provider" )
-                    outFile);
-            sendScreenshot(uri.toString());
-        }catch(IOException e){}
-    }
-
     //launches the editing activity and passes the location of the camera image file
     public void sendImageToEditor(){
         Intent intent = new Intent(this, EditingActivity.class);
@@ -148,6 +118,17 @@ public class MainActivity extends AppCompatActivity {
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         intent.setType("image/png");
         startActivity(intent);
+    }
+
+
+    /*
+        Method to rotate bitmap, as android default from emulator rotates 90 degrees
+     */
+    public static Bitmap rotateBitmap(Bitmap source, float angle)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
     }
 }
 
