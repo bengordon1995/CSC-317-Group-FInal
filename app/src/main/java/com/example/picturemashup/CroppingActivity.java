@@ -212,11 +212,39 @@ public class CroppingActivity extends Activity {
         paint.setXfermode(new PorterDuffXfermode(SRC_OVER));
         canvas.drawBitmap(editedBitmap, null, new Rect(0,0, CameraActivity.imageDim, CameraActivity.imageDim), paint);
 
-        ImageView compositedView = findViewById(R.id.composite);
-        compositedView.setLayerType(View.LAYER_TYPE_SOFTWARE, paint);
-        compositedView.setImageBitmap(outBitmap);
-        ln1.removeView(drawImg);
+        try {
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            File image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
 
+
+            //set class variable so current path is accessible outside method scope
+            String newBackgroundImagePath = image.getAbsolutePath();
+            FileOutputStream outputStream = new FileOutputStream(image);
+
+
+            outBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            Intent intent = new Intent(this, EditingActivity.class);
+            Bundle extras = new Bundle();
+            extras.putString("fileLocation", newBackgroundImagePath);
+            intent.putExtras(extras);
+            startActivity(intent);
+
+        }
+        catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(IOException f){
+            f.printStackTrace();
+        }
     }
 
     /*
