@@ -121,7 +121,7 @@ public class CroppingActivity extends Activity {
         @Override
         public void onDraw(Canvas canvas) {
             canvas.drawBitmap(bitmap, 0, 0, paint);
-            bitmapCanvas.drawCircle(x, y, 30, eraserPaint);
+            bitmapCanvas.drawCircle(x, y, 45, eraserPaint);
             canvas.drawPath(circlePath, circlePaint);
         }
 
