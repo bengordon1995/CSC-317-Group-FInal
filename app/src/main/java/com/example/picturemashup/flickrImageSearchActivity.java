@@ -46,8 +46,7 @@ public class flickrImageSearchActivity extends AppCompatActivity {
 
 
     public void getJson(View v){
-        //LinearLayout linearLayout = (LinearLayout)findViewById(R.id.cameraLayout);
-        //linearLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+
         pictures= new ArrayList<Bitmap>();
         EditText input= findViewById(R.id.input);
         String search= input.getText().toString();

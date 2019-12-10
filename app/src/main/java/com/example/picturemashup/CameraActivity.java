@@ -91,7 +91,7 @@ public class CameraActivity extends AppCompatActivity {
 
     //launches the editing activity and passes the location of the camera image file
     public void sendImageToEditor(){
-        Intent intent = new Intent(this, EditingActivity.class);
+        Intent intent = new Intent(this, CroppingActivity.class);
         Bundle extras = new Bundle();
         extras.putString("fileLocation", currentPhotoPath);
         intent.putExtras(extras);
