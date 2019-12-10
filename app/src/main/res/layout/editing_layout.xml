@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/grey"
+    android:id="@+id/editingViewMainGroup"
     tools:context="com.example.picturemashup.EditingActivity">
 
     <TextView
@@ -63,23 +64,14 @@
             android:text="CLEAR WORK"
             android:textSize="20dp" ></Button>
 
-
-
         <ImageButton
             android:layout_width="90dp"
             android:layout_height="90dp"
             android:layout_marginLeft="52dp"
-
+            android:onClick="launchShareIntent"
             android:background="@color/colorPrimary" >
         </ImageButton>
 
-
-
-
-
-
     </LinearLayout>
-
-
 
 </LinearLayout>
