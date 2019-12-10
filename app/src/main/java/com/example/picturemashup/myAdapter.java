@@ -5,13 +5,19 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import static com.example.picturemashup.CameraActivity.currentPhotoPath;
 
@@ -44,14 +50,42 @@ public class myAdapter extends ArrayAdapter<String> {
 
                 @Override
                 public void onClick(View v) {
-                    ImageView image= (ImageView) v;
-                    Bitmap imgaeBitmap= ((BitmapDrawable)image.getDrawable()).getBitmap();
+                    ImageView imageview= (ImageView) v;
+                    Bitmap imgaeBitmap= ((BitmapDrawable)imageview.getDrawable()).getBitmap();
 
-                    Intent intent = new Intent(this, CroppingActivity.class);
+
+                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+                    String imageFileName = "JPEG_" + timeStamp + "_";
+                    File storageDir = c.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                    File image = null;
+                    String editedBitmapFilePath= null;
+                    try {
+                        image = File.createTempFile(
+                                imageFileName,  /* prefix */
+                                ".jpg",         /* suffix */
+                                storageDir      /* directory */
+                        );
+
+                    //set class variable so current path is accessible outside method scope
+                    editedBitmapFilePath = image.getAbsolutePath();
+
+                    FileOutputStream outputStream = new FileOutputStream(image);
+                    imgaeBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+                    outputStream.flush();
+                    outputStream.close();
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+
+                    Intent intent = new Intent(c, EditingActivity.class);
                     Bundle extras = new Bundle();
-                    extras.putString("fileLocation", currentPhotoPath);
+                    extras.putString("fileLocation", editedBitmapFilePath);
                     intent.putExtras(extras);
-                    startActivity(intent);
+                    c.startActivity(intent);
                 }
             });
         }

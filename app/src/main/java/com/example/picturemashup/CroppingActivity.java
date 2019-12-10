@@ -37,6 +37,7 @@ public class CroppingActivity extends Activity {
     DrawView drawImg;
     LinearLayout ln1;
     Bitmap bitmap;
+    String BackgroundFileLocation;
 
     /*
         When this activity is started, it is passed a string bundle that represents
@@ -53,6 +54,7 @@ public class CroppingActivity extends Activity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         bitmapAbsoluteLocation = extras.getString("fileLocation");
+        BackgroundFileLocation= extras.getString("BackgroundFileLocation");
 
         ln1 = (LinearLayout) findViewById(R.id.mainViewGroup);
         drawImg = new DrawView(this);
@@ -197,7 +199,7 @@ public class CroppingActivity extends Activity {
         Bitmap bmForeground = BitmapFactory.decodeFile(bm2FileLocation, bmOptions);
 
         //dummy bitmap (THIS IS WHERE THE FLICKR BITMAP GOES)
-        Bitmap bmBackground = BitmapFactory.decodeResource(getResources(), R.drawable.beach);
+        Bitmap bmBackground = BitmapFactory.decodeFile(BackgroundFileLocation, bmOptions);
 
         //create a new bitmap to hold the composited image
         Paint paint = new Paint();

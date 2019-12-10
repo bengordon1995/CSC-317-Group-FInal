@@ -23,6 +23,7 @@ public class CameraActivity extends AppCompatActivity {
 
     //self reference
     static CameraActivity instance;
+    String BackgroundFileLocation;
 
     //the users image bitmap taken from the camera intent
     Bitmap cameraBitmap;
@@ -36,7 +37,11 @@ public class CameraActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.instance = this;
+        Intent intent= getIntent();
+        Bundle Extras= intent.getExtras();
+        BackgroundFileLocation= Extras.getString("BackgroundLocation");
         dispatchTakePictureIntent();
+
     }
 
     //sets up and dispatches the camera
@@ -93,6 +98,7 @@ public class CameraActivity extends AppCompatActivity {
     public void sendImageToEditor(){
         Intent intent = new Intent(this, CroppingActivity.class);
         Bundle extras = new Bundle();
+        extras.putString("BackgroundFileLocation", BackgroundFileLocation);
         extras.putString("fileLocation", currentPhotoPath);
         intent.putExtras(extras);
         startActivity(intent);
