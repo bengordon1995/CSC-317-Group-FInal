@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
@@ -24,14 +25,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static android.graphics.PorterDuff.Mode.DST_IN;
-import static android.graphics.PorterDuff.Mode.DST_OUT;
-import static android.graphics.PorterDuff.Mode.DST_OVER;
 import static android.graphics.PorterDuff.Mode.SRC_IN;
-import static android.graphics.PorterDuff.Mode.SRC_OUT;
+
 import static android.graphics.PorterDuff.Mode.SRC_OVER;
-import static com.example.picturemashup.MainActivity.rotateBitmap;
 
 public class EditingActivity extends Activity {
 
@@ -42,7 +38,12 @@ public class EditingActivity extends Activity {
     LinearLayout ln1;
     Bitmap bitmap;
 
+    /*
+        When this activity is started, it is passed a string bundle that represents
+        the absolute file location of the image from the camera intent from the previous activity
 
+        onCreate saves this location, and creates a drawView specified below
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +60,11 @@ public class EditingActivity extends Activity {
 
     }
 
+
+    /*
+        This drawView class allows the user to erase the image from the camera intent,
+        thereby non-square cropping the image
+     */
     public class DrawView extends View implements View.OnTouchListener {
 
         private int x = 0;
@@ -82,11 +88,12 @@ public class EditingActivity extends Activity {
 
             //squaring up the image
             bp = bp.createBitmap(bp, 0, 0, MainActivity.imageDim, MainActivity.imageDim);
+
             //rotating the image into correct alignment
             bp = rotateBitmap(bp, 90);
 
 
-            // Set bitmap
+            // Create and set bitmap to draw on
             bitmap = Bitmap.createBitmap(MainActivity.imageDim, MainActivity.imageDim, Bitmap.Config.ARGB_8888);
             bitmapCanvas = new Canvas();
             bitmapCanvas.setBitmap(bitmap);
@@ -135,6 +142,10 @@ public class EditingActivity extends Activity {
         }
     }
 
+    /*
+        onCropSubmit creates a new file for the cropped image, and saves the bitmap to the file
+        Then, it calls compositeImages() with the file
+     */
     public void onCropSubmit(View view) throws IOException {
         System.out.println("called onCropSubmit");
         try {
@@ -174,7 +185,11 @@ public class EditingActivity extends Activity {
         }
     }
 
-    //combine the two images
+    /*
+        Combines the two images: first the background from Flickr, and then the cropped foreground
+        from the camera intent
+     */
+
     public void compositeImages(String bm2FileLocation, Bitmap editedBitmap){
         System.out.println("called composite images");
         //get the bitmap from the editingActivity
@@ -192,14 +207,11 @@ public class EditingActivity extends Activity {
         Paint paint = new Paint();
         Bitmap outBitmap = Bitmap.createBitmap(MainActivity.imageDim, MainActivity.imageDim, Bitmap.Config.ARGB_8888);
 
-
         ImageView foregroundView = findViewById(R.id.foreground);
         foregroundView.setImageBitmap(editedBitmap);
 
         ImageView backgroundView = findViewById(R.id.background);
         backgroundView.setImageBitmap(bmBackground);
-
-
 
         //composite the two images by drawing to canvas (NOT CHECKED FOR PORTER-DUFF YET)
         Canvas canvas = new Canvas(outBitmap);
@@ -214,7 +226,19 @@ public class EditingActivity extends Activity {
         ImageView compositedView = findViewById(R.id.composite);
         compositedView.setLayerType(View.LAYER_TYPE_SOFTWARE, paint);
         compositedView.setImageBitmap(outBitmap);
+    }
 
+    /*
+         Method to rotate bitmap, as android default from emulator rotates 90 degrees
+    */
+    public static Bitmap rotateBitmap(Bitmap source, float angle)
+    {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+    }
+
+    public void share(View view){
 
     }
 }
