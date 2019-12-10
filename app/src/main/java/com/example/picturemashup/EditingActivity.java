@@ -87,14 +87,14 @@ public class EditingActivity extends Activity {
             bp = BitmapFactory.decodeFile(bitmapAbsoluteLocation, bmOptions);
 
             //squaring up the image
-            bp = bp.createBitmap(bp, 0, 0, MainActivity.imageDim, MainActivity.imageDim);
+            bp = bp.createBitmap(bp, 0, 0, CameraActivity.imageDim, CameraActivity.imageDim);
 
             //rotating the image into correct alignment
             bp = rotateBitmap(bp, 90);
 
 
             // Create and set bitmap to draw on
-            bitmap = Bitmap.createBitmap(MainActivity.imageDim, MainActivity.imageDim, Bitmap.Config.ARGB_8888);
+            bitmap = Bitmap.createBitmap(CameraActivity.imageDim, CameraActivity.imageDim, Bitmap.Config.ARGB_8888);
             bitmapCanvas = new Canvas();
             bitmapCanvas.setBitmap(bitmap);
             bitmapCanvas.drawColor(Color.TRANSPARENT);
@@ -164,11 +164,11 @@ public class EditingActivity extends Activity {
 
             //draw edits to bitmap
             Paint paint = new Paint();
-            Bitmap outBitmap = Bitmap.createBitmap(MainActivity.imageDim, MainActivity.imageDim, Bitmap.Config.ARGB_8888);
+            Bitmap outBitmap = Bitmap.createBitmap(CameraActivity.imageDim, CameraActivity.imageDim, Bitmap.Config.ARGB_8888);
             Canvas canvas = new Canvas(outBitmap);
-            canvas.drawBitmap(bp, null, new Rect(0,0,MainActivity.imageDim, MainActivity.imageDim), paint);
+            canvas.drawBitmap(bp, null, new Rect(0,0, CameraActivity.imageDim, CameraActivity.imageDim), paint);
             paint.setXfermode(new PorterDuffXfermode(SRC_IN));
-            canvas.drawBitmap(bitmap, null, new Rect(0,0,MainActivity.imageDim, MainActivity.imageDim), paint);
+            canvas.drawBitmap(bitmap, null, new Rect(0,0, CameraActivity.imageDim, CameraActivity.imageDim), paint);
 
             outBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
             outputStream.flush();
@@ -196,36 +196,25 @@ public class EditingActivity extends Activity {
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         Bitmap bmForeground = BitmapFactory.decodeFile(bm2FileLocation, bmOptions);
 
-        //remove old view
-        ImageView previousView = findViewById(R.id.currentImageView);
-        previousView.setImageBitmap(null);
-
         //dummy bitmap (THIS IS WHERE THE FLICKR BITMAP GOES)
         Bitmap bmBackground = BitmapFactory.decodeResource(getResources(), R.drawable.beach);
 
         //create a new bitmap to hold the composited image
         Paint paint = new Paint();
-        Bitmap outBitmap = Bitmap.createBitmap(MainActivity.imageDim, MainActivity.imageDim, Bitmap.Config.ARGB_8888);
-
-        ImageView foregroundView = findViewById(R.id.foreground);
-        foregroundView.setImageBitmap(editedBitmap);
-
-        ImageView backgroundView = findViewById(R.id.background);
-        backgroundView.setImageBitmap(bmBackground);
+        Bitmap outBitmap = Bitmap.createBitmap(CameraActivity.imageDim, CameraActivity.imageDim, Bitmap.Config.ARGB_8888);
 
         //composite the two images by drawing to canvas (NOT CHECKED FOR PORTER-DUFF YET)
         Canvas canvas = new Canvas(outBitmap);
         canvas.drawColor(Color.TRANSPARENT);
-        canvas.drawBitmap(bmBackground, null, new Rect(0,0,MainActivity.imageDim, MainActivity.imageDim), paint);
+        canvas.drawBitmap(bmBackground, null, new Rect(0,0, CameraActivity.imageDim, CameraActivity.imageDim), paint);
         paint.setXfermode(new PorterDuffXfermode(SRC_OVER));
-        canvas.drawBitmap(editedBitmap, null, new Rect(0,0,MainActivity.imageDim, MainActivity.imageDim), paint);
-
-        //ImageView mainImageView = findViewById(R.id.currentImageView);
-       // mainImageView.setImageBitmap(null);
+        canvas.drawBitmap(editedBitmap, null, new Rect(0,0, CameraActivity.imageDim, CameraActivity.imageDim), paint);
 
         ImageView compositedView = findViewById(R.id.composite);
         compositedView.setLayerType(View.LAYER_TYPE_SOFTWARE, paint);
         compositedView.setImageBitmap(outBitmap);
+        ln1.removeView(drawImg);
+
     }
 
     /*

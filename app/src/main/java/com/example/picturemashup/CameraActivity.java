@@ -7,7 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.view.View;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 import java.io.File;
@@ -15,14 +15,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class MainActivity extends AppCompatActivity {
+public class CameraActivity extends AppCompatActivity {
 
     static String currentPhotoPath;
     static final int REQUEST_TAKE_PHOTO = 1;
     static final int imageDim = 900;
 
     //self reference
-    static MainActivity instance;
+    static CameraActivity instance;
 
     //the users image bitmap taken from the camera intent
     Bitmap cameraBitmap;
@@ -36,9 +36,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         this.instance = this;
-    }
-
-    public void onTakePictureClick(View view){
         dispatchTakePictureIntent();
     }
 
@@ -92,22 +89,12 @@ public class MainActivity extends AppCompatActivity {
         return image;
     }
 
-
     //launches the editing activity and passes the location of the camera image file
     public void sendImageToEditor(){
         Intent intent = new Intent(this, EditingActivity.class);
         Bundle extras = new Bundle();
         extras.putString("fileLocation", currentPhotoPath);
         intent.putExtras(extras);
-        startActivity(intent);
-    }
-
-    //takes the uri string and launches a share intent with it
-    private void sendScreenshot(String uriString) {
-        Intent intent = new Intent(android.content.Intent.ACTION_SEND);
-        intent.putExtra(Intent.EXTRA_STREAM, Uri.parse(uriString));
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        intent.setType("image/png");
         startActivity(intent);
     }
 }
