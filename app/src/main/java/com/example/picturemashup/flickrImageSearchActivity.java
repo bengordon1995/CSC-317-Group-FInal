@@ -43,12 +43,22 @@ public class flickrImageSearchActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search_menu);
+
         HelpLaunchFragment helpLaunchFragment = new HelpLaunchFragment();
         helpLaunchFragment.setContainerActivity(this);
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, helpLaunchFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+
+        LinearLayout ll = (LinearLayout)findViewById(R.id.container);
+        ll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TextView textView = (TextView)findViewById(R.id.animation);
+                textView.setText("");
+            }
+        });
 
     }
 

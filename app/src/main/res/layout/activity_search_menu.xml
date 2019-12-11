@@ -23,8 +23,8 @@
 
     <EditText
         android:id="@+id/input"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="30dp"
         android:typeface="serif"
         android:layout_width="match_parent"
         android:layout_height="75dp"

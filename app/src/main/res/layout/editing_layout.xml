@@ -70,10 +70,10 @@
         <Button
             android:layout_width="100dp"
             android:typeface="serif"
-            android:layout_marginLeft="45dp"
-            android:background="@color/colorPrimary"
-            android:layout_height="90dp"
-            android:textColor="@color/colorAccent"
+            android:layout_marginLeft="35dp"
+            android:background="@color/colorPrimaryDark"
+            android:layout_height="100dp"
+            android:textColor="@color/colorPrimary"
             android:text="CLEAR WORK"
             android:textSize="20dp"
             android:onClick="restart"></Button>
@@ -81,7 +81,7 @@
         <ImageButton
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="35dp"
             android:src="@drawable/share_foreground"
             android:background="@color/colorPrimaryDark"
             android:onClick="launchShareIntent"

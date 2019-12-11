@@ -3,22 +3,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/frag"
     android:orientation="vertical"
     tools:context=".HelpLaunchFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
-    <ImageView
-        android:layout_marginTop="150dp"
-        android:layout_width="50dp"
-        android:layout_height="100dp"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:layout_marginBottom="15dp" />
+
     <TextView
-        android:layout_width="300dp"
-        android:layout_height="80dp"
-        android:textSize="20dp"
+        android:id="@+id/animation"
+        android:layout_marginTop="200dp"
+        android:layout_width="130dp"
+        android:layout_height="170dp"
+        android:textSize="10dp"
+        android:textColor="@color/colorPrimary"
         android:padding="5dp"
         android:gravity="center"
         android:layout_gravity="center"

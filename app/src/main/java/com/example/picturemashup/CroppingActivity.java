@@ -17,7 +17,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -48,7 +47,7 @@ public class CroppingActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_editing);
+        setContentView(R.layout.activity_cropping);
 
         //get camera intent bitmap from extras
         Intent intent = getIntent();

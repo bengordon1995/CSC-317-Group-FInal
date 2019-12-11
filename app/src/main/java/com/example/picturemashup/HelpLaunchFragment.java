@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 
 
 public class HelpLaunchFragment extends Fragment {
@@ -42,6 +45,11 @@ public class HelpLaunchFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         view = inflater.inflate(R.layout.fragment_launch, container, false);
+        Animation a = AnimationUtils.loadAnimation(getContext(), R.anim.animate);
+        a.reset();
+        LinearLayout tv = (LinearLayout) view.findViewById(R.id.frag);
+        tv.clearAnimation();
+        tv.startAnimation(a);
         return view;
     }
 
