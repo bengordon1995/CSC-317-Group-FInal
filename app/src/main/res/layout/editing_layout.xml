@@ -6,8 +6,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/grey"
-    android:id="@+id/editingViewMainGroup"
     tools:context="com.example.picturemashup.EditingActivity">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/contactFrame"
+        android:orientation="vertical">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/editingViewMainGroup"
+        android:orientation="vertical"
+        >
 
     <TextView
         android:typeface="serif"
@@ -62,7 +75,8 @@
             android:layout_height="90dp"
             android:textColor="@color/colorAccent"
             android:text="CLEAR WORK"
-            android:textSize="20dp" ></Button>
+            android:textSize="20dp"
+            android:onClick="restart"></Button>
 
         <ImageButton
             android:layout_width="90dp"
@@ -71,7 +85,7 @@
             android:onClick="launchShareIntent"
             android:background="@color/colorPrimary" >
         </ImageButton>
-
+    </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>
