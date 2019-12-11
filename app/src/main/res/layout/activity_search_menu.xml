@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/container"
     android:orientation="vertical"
-
+    android:background="@color/grey"
     tools:context="com.example.picturemashup.flickrImageSearchActivity">
 
     <TextView
@@ -13,15 +14,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Picture Mashup"
+        android:text="@string/app_name"
         android:layout_marginTop="10dp"
-        android:textColor="@color/colorAccent"
-        android:textSize="40dp"
+        android:textColor="@color/title"
+        android:textSize="50dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/input"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="20dp"
+        android:typeface="serif"
         android:layout_width="match_parent"
         android:layout_height="75dp"
       />
@@ -30,6 +34,8 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:text="Click to search"
+        android:layout_marginLeft="15dp"
+        android:background="@color/colorPrimaryDark"
         android:onClick="getJson" />
 
     <LinearLayout

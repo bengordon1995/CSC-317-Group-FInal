@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">PictureMashup</string>
+    <string name="app_name">Picture Mashup</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="open_frag">USE THE SEARCH BAR TO FIND A
+        BACKGROUND FOR YOUR PICTURE</string>
 </resources>
