@@ -22,7 +22,6 @@
         android:padding="5dp"
         android:gravity="center"
         android:layout_gravity="center"
-        android:background=""
         android:text="@string/open_frag" />
 
 </LinearLayout>

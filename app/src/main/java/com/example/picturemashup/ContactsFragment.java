@@ -91,7 +91,7 @@ public class ContactsFragment extends Fragment {
             while (cursor.moveToNext() && limit > 0) {
                 String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 String given = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                String contact = given + " :: " + contactId;
+                String contact = given;
                 contacts.add(contact);
                 limit--;
             }
