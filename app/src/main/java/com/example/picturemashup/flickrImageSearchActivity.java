@@ -8,6 +8,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -54,6 +55,11 @@ public class flickrImageSearchActivity extends AppCompatActivity {
 
     public void getJson(View v){
 
+        InputMethodManager imm = (InputMethodManager) getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(),0);
+
+
+
         pictures= new ArrayList<Bitmap>();
         EditText input= findViewById(R.id.input);
         String search= input.getText().toString();
@@ -98,7 +104,7 @@ public class flickrImageSearchActivity extends AppCompatActivity {
 
                     String picURL= allPhotos.getJSONObject(i).getString("url_s");
                     Bitmap pic= getBitmapFromURL(picURL);
-                    pic = Bitmap.createScaledBitmap(pic, 500, 500, true);
+                    pic = Bitmap.createScaledBitmap(pic, 600, 600, true);
                     pictures.add(pic);
                     picturesSRC.add(picURL);
 

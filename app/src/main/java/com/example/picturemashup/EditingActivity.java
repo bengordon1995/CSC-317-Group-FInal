@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
@@ -40,6 +41,18 @@ public class EditingActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        LinearLayout ln1= findViewById(R.id.editingViewMainGroup);
+        ln1.setVisibility(View.VISIBLE);
+
+        LinearLayout ln2 = findViewById(R.id.contactFrame);
+        ln2.setVisibility(View.GONE);
+
+    }
+
     /*
         onClick for the camera button in the Editing Activity: launches the Camera Activity, which
         on resolution of the subsequent cropping activity, will return to this activity
@@ -61,8 +74,17 @@ public class EditingActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
         bundle.putString("imageAbsoluteLocation", bitmapAbsoluteLocation);
         contactsFragment.setArguments(bundle);
-        fragmentTransaction.replace(R.id.editingViewMainGroup, contactsFragment);
-        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.replace(R.id.contactFrame, contactsFragment);
+        LinearLayout ln2 = findViewById(R.id.contactFrame);
+        ln2.setVisibility(View.VISIBLE);
+        LinearLayout ln1= findViewById(R.id.editingViewMainGroup);
+        ln1.setVisibility(View.GONE);
         fragmentTransaction.commit();
+
+    }
+
+    public void restart(View view){
+        Intent intent = new Intent(this, flickrImageSearchActivity.class);
+        startActivity(intent);
     }
 }
