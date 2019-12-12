@@ -3,6 +3,7 @@ package com.example.picturemashup;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -76,6 +77,11 @@ public class flickrImageSearchActivity extends AppCompatActivity {
         System.out.println(search);
         baseUrl = top + search + bottom;
         new DownloadTask().execute();
+    }
+
+    public void helpPage(View view) {
+        Intent intent = new Intent(this, HelpActivity.class);
+        startActivity(intent);
     }
 
 

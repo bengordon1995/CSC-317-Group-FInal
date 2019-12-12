@@ -4,4 +4,10 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="open_frag">USE THE SEARCH BAR TO FIND A
         BACKGROUND FOR YOUR PICTURE</string>
+    <string name="help1">Please begin by entering a search term in to the Search Bar on page 1.
+        You will then be asked to choose a background that you enjoy most! </string>
+    <string name="help2">After choosing a background, you will be brought to a new activity where you
+        can take an image that can be cropped into the background you chose previously!</string>
+    <string name="help3">Once you are finished cropping your image and are satisfied with how
+        it turned out, feel free to share the image with friends, or start all over with a new background!</string>
 </resources>
