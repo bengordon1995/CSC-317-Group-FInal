@@ -44,13 +44,8 @@ public class EditingActivity extends AppCompatActivity {
     @Override
     public void onResume(){
         super.onResume();
-
         LinearLayout ln1= findViewById(R.id.editingViewMainGroup);
         ln1.setVisibility(View.VISIBLE);
-
-        LinearLayout ln2 = findViewById(R.id.contactFrame);
-        ln2.setVisibility(View.GONE);
-
     }
 
     /*

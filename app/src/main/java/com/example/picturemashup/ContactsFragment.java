@@ -91,13 +91,12 @@ public class ContactsFragment extends Fragment {
             while (cursor.moveToNext() && limit > 0) {
                 String contactId = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID));
                 String given = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                String contact = given;
+                String contact = given + " :: " + contactId;
                 contacts.add(contact);
                 limit--;
             }
             cursor.close();
         }
-        System.out.println(contacts.toString());
     }
 
     /*
@@ -114,7 +113,8 @@ public class ContactsFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     TextView v = view.findViewById(R.id.text_row_text_view);
                     String text = v.getText().toString();
-                    String name = text.substring(0, text.indexOf(" :: "));
+                    System.out.println("text:" + text);
+                    String name = text;
                     String recipientID = text.substring(text.indexOf(" :: ") + 4);
                     String email = getEmail(recipientID);
 
